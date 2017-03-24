@@ -3,7 +3,7 @@ import akka.stream.ActorMaterializer
 
 import scala.concurrent.ExecutionContext
 
-trait WebAPi {
+trait WebApi {
 
   // Entry point for creating and looking up actors.
   implicit val system: ActorSystem
