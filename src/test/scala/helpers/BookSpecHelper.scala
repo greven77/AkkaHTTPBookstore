@@ -11,8 +11,9 @@ class BookSpecHelper(categoryRepository: CategoryRepository)(bookRepository: Boo
   (implicit executor: ExecutionContext) {
 
   val category = Category(None, "Sci-Fi")
-  def book(categoryId: Long) = Book(None, "Murder in Ganymede", Date.valueOf("1998-01-20"),
-    categoryId, 3, "John Doe")
+  def book(categoryId: Long, title: String = "Murder in Ganymede",
+    releaseDate: Date = Date.valueOf("1998-01-20"), author: String = "John Doe") =
+    Book(None, title, releaseDate, categoryId, 3, author)
 
   // Helper function to create a category, then a book, perform some assertions
   // to it, and then delete them both

@@ -29,4 +29,18 @@ class BookRepository(val databaseService: DatabaseService)(implicit executor: Ex
 
   // Here we find the respective book and then we delete it
   def delete(id: Long): Future[Int] = db.run(books.filter(_.id === id).delete)
+
+  def search(bookSearch: BookSearch): Future[Seq[Book]] = {
+    val query = books.filter { book =>
+      List(
+        bookSearch.title.map(t => book.title like s"%$t%"),
+        bookSearch.releaseDate.map(book.releaseDate === _),
+        bookSearch.categoryId.map(book.categoryId === _),
+        bookSearch.author.map(a => book.author like s"%$a%")
+      ).collect({case Some(criteria) => criteria})
+        .reduceLeftOption(_ && _)
+        .getOrElse(true: Rep[Boolean])
+    }
+    db.run(query.result)
+  }
 }
