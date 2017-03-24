@@ -1,0 +1,8 @@
+target
+*.class
+.ensime-cache
+project/project
+project/target
+.ensime
+.ensime_cache/
+.projectile
