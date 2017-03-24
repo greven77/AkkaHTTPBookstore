@@ -1,4 +1,4 @@
-activator-akka-scala-seed
+Akka HTTP Bookstore
 =========================
 
-A minimal seed template for an Akka with Scala build 
+An example REST API using Akka HTTP
