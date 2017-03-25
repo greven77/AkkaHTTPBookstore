@@ -30,12 +30,7 @@ class BookController(val bookRepository: BookRepository) extends BookJson
             complete(StatusCodes.Created, bookRepository.create(book))
           }
         }
-      } ~
-      get {
-        complete {
-          bookRepository.all
-        }
-      } ~
+      }~
       get {
         parameters(('title.?, 'releaseDate.as[Date].?, 'categoryId.as[Long].?, 'author.?))
           .as(BookSearch) { bookSearch: BookSearch =>
