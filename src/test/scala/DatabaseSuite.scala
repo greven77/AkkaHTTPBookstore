@@ -6,7 +6,8 @@ class DatabaseSuite extends Sequential(
   new BookRepositorySpec,
   new BookSearchSpec,
   new BookEndpointSpec,
-  new CategoryEndpointSpec
+  new CategoryEndpointSpec,
+  new UserEndpointSpec
 ) {
 
 }
