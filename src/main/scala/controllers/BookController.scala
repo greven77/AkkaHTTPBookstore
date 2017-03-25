@@ -7,12 +7,15 @@ import akka.http.scaladsl.server.Directives._
 import akka.http.scaladsl.unmarshalling.{PredefinedFromStringUnmarshallers, Unmarshaller}
 import akka.http.scaladsl.server.PathMatchers.IntNumber
 import models.{Book, BookJson, BookSearch}
+import services.{TokenService}
+import directives.VerifyToken
 import repository.BookRepository
 
-import scala.concurrent.ExecutionException
+import scala.concurrent.{ExecutionContext, ExecutionException}
 
-class BookController(val bookRepository: BookRepository) extends BookJson
-    with PredefinedFromStringUnmarshallers{
+class BookController(val bookRepository: BookRepository, val tokenService: TokenService)(implicit ec: ExecutionContext) extends BookJson
+    with PredefinedFromStringUnmarshallers
+    with VerifyToken{
 
   implicit val dateFromStringUnmarshaller: Unmarshaller[String, Date] =
     Unmarshaller.strict[String, Date] { string =>
@@ -46,8 +49,10 @@ class BookController(val bookRepository: BookRepository) extends BookJson
       // We want to listen to paths like `/books/id` or `/books/id/`
       pathEndOrSingleSlash {
         get {
-          complete {
-            bookRepository.findById(id)
+          verifyToken(ec) { _ =>
+            complete {
+              bookRepository.findById(id)
+            }
           }
         } ~
         delete {
